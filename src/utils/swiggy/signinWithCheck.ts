@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 
-async function signinWithCheck(agent: SocksProxyAgent, combinedCookies: string, csrfToken: string) {
+async function signinWithCheck(agent: SocksProxyAgent, combinedCookies: string, csrfToken: string, phoneNumber: string) {
     try {
         const url = 'https://www.swiggy.com/dapi/auth/signin-with-check';
         const headers = {
@@ -26,7 +26,7 @@ async function signinWithCheck(agent: SocksProxyAgent, combinedCookies: string, 
         };
 
         const payload = {
-            mobile: '8252077673',
+            mobile: phoneNumber,
             password: 'hi',
             _csrf: csrfToken,
         };
