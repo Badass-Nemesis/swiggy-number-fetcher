@@ -1,17 +1,8 @@
 import axios from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
-import getCsrfToken from './getCsrfToken';
 
-async function signinWithCheck() {
+async function signinWithCheck(agent: SocksProxyAgent, combinedCookies: string, csrfToken: string) {
     try {
-        const { combinedCookies, csrfToken } = await getCsrfToken();
-        if (!combinedCookies || !csrfToken) {
-            throw new Error('Failed to fetch cookies or CSRF token.');
-        }
-
-        const proxyOptions = `socks5://narendrakumar781:QeeHRkw5TP@122.50.152.150:50101`; 
-        const agent = new SocksProxyAgent(proxyOptions);
-
         const url = 'https://www.swiggy.com/dapi/auth/signin-with-check';
         const headers = {
             'Host': 'www.swiggy.com',
@@ -26,7 +17,7 @@ async function signinWithCheck() {
             'DNT': '1',
             'Sec-GPC': '1',
             'Connection': 'keep-alive',
-            'Cookie': combinedCookies, 
+            'Cookie': combinedCookies,
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Site': 'same-origin',
@@ -34,22 +25,23 @@ async function signinWithCheck() {
             'TE': 'trailers',
         };
 
-        const data = {
-            mobile: '8252077673', 
-            password: 'yes', 
-            _csrf: csrfToken, 
+        const payload = {
+            mobile: '8252077673',
+            password: 'hi',
+            _csrf: csrfToken,
         };
 
-        const response = await axios.post(url, data, {
+        const response = await axios.post(url, payload, {
             httpAgent: agent,
             httpsAgent: agent,
             headers,
         });
 
-        console.log('Response Data:', response.data);
+        // console.log('Response Data:', response.data);
+        return response.data;
     } catch (error) {
         console.error('Error during signin-with-check:', error);
     }
 }
 
-signinWithCheck();
+export default signinWithCheck;

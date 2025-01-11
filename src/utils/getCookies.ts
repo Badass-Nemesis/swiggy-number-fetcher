@@ -1,11 +1,8 @@
 import axios from 'axios';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 
-async function getCookies(url: string) {
+async function getCookies(url: string, agent: SocksProxyAgent) {
     try {
-        const proxyOptions = `socks5://narendrakumar781:QeeHRkw5TP@122.50.152.150:50101`; 
-        const agent = new SocksProxyAgent(proxyOptions);
-
         const response = await axios.get(url, {
             httpAgent: agent,
             httpsAgent: agent,
@@ -28,11 +25,14 @@ async function getCookies(url: string) {
 
         const cookies = response.headers['set-cookie'];
         if (cookies) {
-            console.log('Cookies received:');
-            cookies.forEach((cookie: string, index: number) => {
-                console.log(`Cookie ${index + 1}: ${cookie}`);
-            });
-            return cookies.join('; '); 
+            console.log('Initial cookies received successfully');
+            console.log('---------------------------------------');
+
+            // cookies.forEach((cookie: string, index: number) => {
+            //     console.log(`Cookie ${index + 1}: ${cookie}`);
+            // });
+            
+            return cookies.join('; ');
         } else {
             console.log('No cookies found in the response.');
             return '';
