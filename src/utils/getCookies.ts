@@ -1,8 +1,14 @@
 import axios from 'axios';
+import { SocksProxyAgent } from 'socks-proxy-agent';
 
 async function getCookies(url: string) {
     try {
+        const proxyOptions = `socks5://narendrakumar781:QeeHRkw5TP@122.50.152.150:50101`; 
+        const agent = new SocksProxyAgent(proxyOptions);
+
         const response = await axios.get(url, {
+            httpAgent: agent,
+            httpsAgent: agent,
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
