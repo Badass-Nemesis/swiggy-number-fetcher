@@ -9,7 +9,7 @@ async function getCsrfToken() {
             throw new Error('Failed to fetch initial cookies.');
         }
 
-        const proxyOptions = `socks5://narendrakumar781:QeeHRkw5TP@122.50.152.150:50101`;
+        const proxyOptions = `socks5://narendrakumar781:QeeHRkw5TP@122.50.152.150:50101`; 
         const agent = new SocksProxyAgent(proxyOptions);
 
         const url = 'https://www.swiggy.com/dapi/restaurants/list/v5?lat=25.68850&lng=85.21160&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING';
@@ -25,7 +25,7 @@ async function getCsrfToken() {
             'DNT': '1',
             'Sec-GPC': '1',
             'Connection': 'keep-alive',
-            'Cookie': initialCookies,
+            'Cookie': initialCookies, 
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Site': 'same-origin',
@@ -41,6 +41,8 @@ async function getCsrfToken() {
 
         const updatedCookies = response.headers['set-cookie'] || [];
         const csrfToken = response.data?.csrfToken;
+
+        const combinedCookies = `${initialCookies}; ${updatedCookies.join('; ')}`;
 
         if (updatedCookies.length > 0) {
             console.log('Updated Cookies:');
@@ -58,19 +60,16 @@ async function getCsrfToken() {
         }
 
         return {
-            updatedCookies: updatedCookies.join('; '),
+            combinedCookies,
             csrfToken,
         };
     } catch (error) {
         console.error('Error fetching CSRF token:', error);
         return {
-            updatedCookies: '',
+            combinedCookies: '',
             csrfToken: '',
         };
     }
 }
 
-getCsrfToken().then(({ updatedCookies, csrfToken }) => {
-    console.log('Final Updated Cookies:', updatedCookies);
-    console.log('Final CSRF Token:', csrfToken);
-});
+export default getCsrfToken;
