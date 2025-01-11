@@ -3,7 +3,7 @@ import { SocksProxyAgent } from 'socks-proxy-agent';
 
 async function getCookies(url: string) {
     try {
-        const proxyOptions = `socks5://narendrakumar781:QeeHRkw5TP@122.50.152.150:50101`; 
+        const proxyOptions = `socks5://narendrakumar781:QeeHRkw5TP@122.50.152.150:50101`;
         const agent = new SocksProxyAgent(proxyOptions);
 
         const response = await axios.get(url, {
@@ -32,13 +32,15 @@ async function getCookies(url: string) {
             cookies.forEach((cookie: string, index: number) => {
                 console.log(`Cookie ${index + 1}: ${cookie}`);
             });
+            return cookies.join('; ');
         } else {
             console.log('No cookies found in the response.');
+            return '';
         }
     } catch (error) {
         console.error('Error fetching cookies:', error);
+        return '';
     }
 }
 
-const url = 'https://www.swiggy.com/restaurants';
-getCookies(url);
+export default getCookies;
