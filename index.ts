@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-async function sendOtpRequest() {
-    const url = 'https://www.swiggy.com/dapi/auth/sms-otp';
+async function signInWithCheck() {
+    const url = 'https://www.swiggy.com/dapi/auth/signin-with-check';
     const payload = {
+        mobile: '8252077672',
+        password: '',
         _csrf: 'YiIKKpzE1kab-U_KDROqGA3fTHgolf6AhsTlqRQc',
-        mobile: '8252077674',
     };
 
     const headers = {
@@ -24,7 +25,8 @@ async function sendOtpRequest() {
         'Sec-Fetch-Dest': 'empty',
         'Sec-Fetch-Mode': 'cors',
         'Sec-Fetch-Site': 'same-origin',
-        'Priority': 'u=0',
+        'Priority': 'u=4',
+        'TE': 'trailers',
     };
 
     try {
@@ -40,4 +42,4 @@ async function sendOtpRequest() {
     }
 }
 
-sendOtpRequest();
+signInWithCheck();
