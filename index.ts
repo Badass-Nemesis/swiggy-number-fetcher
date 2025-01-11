@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { SocksProxyAgent } from 'socks-proxy-agent';
 
 async function signInWithCheck() {
     const url = 'https://www.swiggy.com/dapi/auth/signin-with-check';
     const payload = {
-        mobile: '8252077672',
-        password: '',
+        mobile: '8341858097',
+        password: 'hi',
         _csrf: 'YiIKKpzE1kab-U_KDROqGA3fTHgolf6AhsTlqRQc',
     };
 
@@ -29,8 +30,15 @@ async function signInWithCheck() {
         'TE': 'trailers',
     };
 
+    const proxyOptions = `socks5://narendrakumar781:QeeHRkw5TP@122.50.152.150:50101`;
+    const agent = new SocksProxyAgent(proxyOptions);
+
     try {
-        const response = await axios.post(url, payload, { headers });
+        const response = await axios.post(url, payload, {
+            headers,
+            httpsAgent: agent,
+            httpAgent: agent,
+        });
 
         console.log('Response:', response.data);
     } catch (error) {
