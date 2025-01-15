@@ -4,61 +4,16 @@ import { useState } from "react";
 import ApiKeyForm from "@/app/components/ApiKeyForm";
 import NumberDisplay from "@/app/components/NumberDisplay";
 import StatusDisplay from "@/app/components/StatusDisplay";
-import { fetchNumber } from "@/app/actions/fetchNumber";
-import { cancelNumber } from "@/app/actions/cancelNumber";
+import { useFetchNumber } from "@/app/hooks/useFetchNumber";
 import ThemeToggle from "@/app/components/ThemeToggle";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string | null>(null);
-  const [number, setNumber] = useState<string | null>(null);
-  const [accessId, setAccessId] = useState<string | null>(null);
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [error, setError] = useState<string | null>(null);
+  const { number, accessId, status, error, startFetchingNumbers, handleCancel } = useFetchNumber();
 
   const handleApiKeySubmit = async (key: string) => {
     setApiKey(key);
-    setStatus("loading");
-    setError(null);
     startFetchingNumbers(key);
-  };
-
-  const startFetchingNumbers = async (key: string) => {
-    setStatus("loading");
-    while (true) {
-      try {
-        const result = await fetchNumber(key);
-        if (result.status === "success") {
-          setAccessId(result.access_id);
-          setNumber(result.number);
-          setStatus("success");
-          break;
-        } else if (result.status === "retry") {
-          setStatus("loading");
-          await new Promise((resolve) => setTimeout(resolve, 5000));
-        } else {
-          throw new Error("Failed to fetch a number. Please try again.");
-        }
-      } catch (err) {
-        setError("Failed to fetch or check number. Please try again.");
-        setStatus("error");
-        break;
-      }
-    }
-  };
-
-  const handleCancel = async () => {
-    if (apiKey && accessId) {
-      setStatus("loading");
-      try {
-        await cancelNumber(apiKey, accessId);
-        setNumber(null);
-        setAccessId(null);
-        startFetchingNumbers(apiKey);
-      } catch (err) {
-        setError("Failed to cancel the number. Please try again.");
-        setStatus("error");
-      }
-    }
   };
 
   return (
@@ -80,7 +35,7 @@ export default function Home() {
                   number={number}
                   accessId={accessId}
                   apiKey={apiKey}
-                  onCancel={handleCancel}
+                  onCancel={() => handleCancel(apiKey, accessId)}
                 />
               ) : (
                 <StatusDisplay status={status} message="Fetching a number..." />

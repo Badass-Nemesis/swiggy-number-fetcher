@@ -1,12 +1,12 @@
 import axios from "axios";
 import { SocksProxyAgent } from "socks-proxy-agent";
-import { PROXY_URL } from "@/lib/constants";
+import { PROXY_URL, SWIGGY_RESTAURANTS_URL } from "@/lib/constants";
 
-export async function getCookies(url: string) {
+export async function getCookies() {
     try {
         const agent = new SocksProxyAgent(PROXY_URL);
 
-        const response = await axios.get(url, {
+        const response = await axios.get(`${SWIGGY_RESTAURANTS_URL}`, {
             httpAgent: agent,
             httpsAgent: agent,
             headers: {
