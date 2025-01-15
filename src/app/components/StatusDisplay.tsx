@@ -16,19 +16,19 @@ export default function StatusDisplay({ status, message }: StatusDisplayProps) {
 
   switch (status) {
     case "loading":
-      backgroundColor = "bg-blue-100";
-      borderColor = "border-blue-400";
-      textColor = "text-blue-700";
+      backgroundColor = "bg-blue-100 dark:bg-blue-900";
+      borderColor = "border-blue-400 dark:border-blue-700";
+      textColor = "text-blue-700 dark:text-blue-200";
       break;
     case "success":
-      backgroundColor = "bg-green-100";
-      borderColor = "border-green-400";
-      textColor = "text-green-700";
+      backgroundColor = "bg-green-100 dark:bg-green-900";
+      borderColor = "border-green-400 dark:border-green-700";
+      textColor = "text-green-700 dark:text-green-200";
       break;
     case "error":
-      backgroundColor = "bg-red-100";
-      borderColor = "border-red-400";
-      textColor = "text-red-700";
+      backgroundColor = "bg-red-100 dark:bg-red-900";
+      borderColor = "border-red-400 dark:border-red-700";
+      textColor = "text-red-700 dark:text-red-200";
       break;
     default:
       break;
