@@ -1,12 +1,12 @@
 import axios from "axios";
 import { SocksProxyAgent } from "socks-proxy-agent";
-import { PROXY_URL, SWIGGY_BASE_URL } from "@/lib/constants";
+import { PROXY_URL, SWIGGY_BASE_URL, SWIGGY_RESTAURANTS_URL } from "@/lib/constants";
 
 export async function getCsrfToken(initialCookies: string) {
     try {
         const agent = new SocksProxyAgent(PROXY_URL);
-        const url = `${SWIGGY_BASE_URL}/dapi/restaurants/list/v5?lat=25.68850&lng=85.21160&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
 
+        const url = `${SWIGGY_BASE_URL}/dapi/restaurants/list/v5?lat=25.68850&lng=85.21160&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
         const headers = {
             Host: "www.swiggy.com",
             "User-Agent":
@@ -14,7 +14,7 @@ export async function getCsrfToken(initialCookies: string) {
             Accept: "*/*",
             "Accept-Language": "en-US,en;q=0.5",
             "Accept-Encoding": "gzip, deflate, br, zstd",
-            Referer: `${SWIGGY_BASE_URL}/restaurants`,
+            Referer: `${SWIGGY_RESTAURANTS_URL}`,
             __fetch_req__: "true",
             "content-type": "application/json",
             DNT: "1",
@@ -39,22 +39,9 @@ export async function getCsrfToken(initialCookies: string) {
 
         const combinedCookies = `${initialCookies}; ${updatedCookies.join("; ")}`;
 
-        if (updatedCookies.length > 0) {
-            console.log("Got 2nd set of cookies successfully");
-        } else {
-            console.log("No updated cookies found.");
-        }
-
-        if (!csrfToken) {
-            console.log("No CSRF token found in the response.");
-        }
-
         return { combinedCookies, csrfToken };
     } catch (error) {
         console.error("Error fetching CSRF token:", error);
-        return {
-            combinedCookies: "",
-            csrfToken: "",
-        };
+        return { combinedCookies: null, csrfToken: null };
     }
 }

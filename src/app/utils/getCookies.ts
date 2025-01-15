@@ -1,4 +1,3 @@
-// src/app/utils/getCookies.ts
 import axios from "axios";
 import { SocksProxyAgent } from "socks-proxy-agent";
 import { PROXY_URL } from "@/lib/constants";
@@ -6,6 +5,7 @@ import { PROXY_URL } from "@/lib/constants";
 export async function getCookies(url: string) {
     try {
         const agent = new SocksProxyAgent(PROXY_URL);
+
         const response = await axios.get(url, {
             httpAgent: agent,
             httpsAgent: agent,
@@ -29,14 +29,12 @@ export async function getCookies(url: string) {
 
         const cookies = response.headers["set-cookie"];
         if (cookies) {
-            console.log("Initial cookies received successfully");
             return cookies.join("; ");
         } else {
-            console.log("No cookies found in the response.");
-            return "";
+            return null;
         }
     } catch (error) {
         console.error("Error fetching cookies:", error);
-        return "";
+        return null;
     }
 }

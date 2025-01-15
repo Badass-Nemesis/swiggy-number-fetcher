@@ -1,12 +1,12 @@
 import axios from "axios";
 import { SocksProxyAgent } from "socks-proxy-agent";
-import { PROXY_URL, SWIGGY_BASE_URL } from "@/lib/constants";
+import { PROXY_URL, SWIGGY_BASE_URL, SWIGGY_SIGNIN_CHECK_URL, SWIGGY_RESTAURANTS_URL } from "@/lib/constants";
 
 export async function signinWithCheck(combinedCookies: string, csrfToken: string, phoneNumber: string) {
     try {
         const agent = new SocksProxyAgent(PROXY_URL);
-        const url = `${SWIGGY_BASE_URL}/dapi/auth/signin-with-check`;
 
+        const url = `${SWIGGY_SIGNIN_CHECK_URL}`;
         const headers = {
             Host: "www.swiggy.com",
             "User-Agent":
@@ -14,7 +14,7 @@ export async function signinWithCheck(combinedCookies: string, csrfToken: string
             Accept: "*/*",
             "Accept-Language": "en-US,en;q=0.5",
             "Accept-Encoding": "gzip, deflate, br, zstd",
-            Referer: `${SWIGGY_BASE_URL}/restaurants`,
+            Referer: `${SWIGGY_RESTAURANTS_URL}`,
             "Content-Type": "application/json",
             __fetch_req__: "true",
             Origin: SWIGGY_BASE_URL,
@@ -44,6 +44,6 @@ export async function signinWithCheck(combinedCookies: string, csrfToken: string
         return response.data;
     } catch (error) {
         console.error("Error during signin-with-check:", error);
-        throw error;
+        return null;
     }
 }

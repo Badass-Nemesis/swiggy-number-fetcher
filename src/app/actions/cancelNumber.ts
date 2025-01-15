@@ -1,32 +1,25 @@
 "use server";
 
 import axios from "axios";
-import { SocksProxyAgent } from "socks-proxy-agent";
-import { API_KEY, PROXY_URL } from "@/lib/constants";
+import { NINJAOTP_HANDLER_API_URL } from "@/lib/constants";
 
-export async function cancelNumber(access_id: string) {
+export async function cancelNumber(apiKey: string, accessId: string) {
     try {
-        const agent = new SocksProxyAgent(PROXY_URL);
-        const API_URL = `https://api.ninjaotp.com/stubs/handler_api.php?api_key=${API_KEY}&action=setStatus&status=cancel&id=${access_id}`;
 
-        const response = await axios.get(API_URL, {
-            httpAgent: agent,
-            httpsAgent: agent,
-        });
+        const API_URL = `${NINJAOTP_HANDLER_API_URL}?api_key=${apiKey}&action=setStatus&status=cancel&id=${accessId}`;
+
+        const response = await axios.get(API_URL);
 
         const data = response.data;
 
-        switch (data) {
-            case "ACCESS_CANCEL":
-                console.log("Number canceled successfully.");
-                return true;
-            case "ERROR":
-                throw new Error("An error occurred while canceling the number.");
-            default:
-                throw new Error("Unknown response from server.");
+        if (data === "ACCESS_CANCEL") {
+            return { status: "success", message: "Number canceled successfully." };
+        } else if (data === "ERROR") {
+            return { status: "error", message: "Failed to cancel the number. Please cancel it manually on NinjaOTP." };
+        } else {
+            return { status: "error", message: "Unknown response from server." };
         }
     } catch (error) {
-        console.error("Error canceling number:", error);
-        return false;
+        return { status: "error", message: "Failed to cancel the number. Please cancel it manually on NinjaOTP." };
     }
 }
