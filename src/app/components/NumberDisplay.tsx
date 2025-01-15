@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { checkNumber } from "@/app/actions/checkNumber";
-import { cancelNumber } from "@/app/actions/cancelNumber";
 import StatusDisplay from "@/app/components/StatusDisplay";
 
 interface NumberDisplayProps {
@@ -25,7 +23,16 @@ export default function NumberDisplay({ number, accessId, apiKey, onCancel }: Nu
     const checkRegistration = async () => {
       setStatus("loading");
       try {
-        const result = await checkNumber(number.slice(2));
+        const response = await fetch("/api/checkNumber", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ phoneNumber: number.slice(2) }),
+        });
+
+        const result = await response.json();
+
         if (isMounted.current) {
           if (result.status === "success") {
             setIsRegistered(result.isRegistered ?? null);
@@ -51,13 +58,7 @@ export default function NumberDisplay({ number, accessId, apiKey, onCancel }: Nu
 
               setTimeout(async () => {
                 if (isMounted.current) {
-                  try {
-                    await cancelNumber(apiKey, accessId);
-                    onCancel();
-                  } catch (err) {
-                    setError("Failed to cancel the number. Please try again.");
-                    setStatus("error");
-                  }
+                  onCancel();
                 }
               }, 5000);
             } else {
