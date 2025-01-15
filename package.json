@@ -1,29 +1,27 @@
 {
   "name": "swiggy-number-checker",
-  "version": "1.0.0",
-  "main": "src/index.ts",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx ts-node src/index.ts"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Badass-Nemesis/swiggy-number-checker.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Badass-Nemesis/swiggy-number-checker/issues"
-  },
-  "homepage": "https://github.com/Badass-Nemesis/swiggy-number-checker#readme",
-  "description": "",
   "dependencies": {
-    "axios": "^1.7.9",
-    "socks-proxy-agent": "^8.0.5"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "15.1.4"
   },
   "devDependencies": {
-    "@types/node": "^22.10.5"
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.4",
+    "@eslint/eslintrc": "^3"
   }
 }
