@@ -86,7 +86,7 @@ export default function NumberDisplay({ number, accessId, apiKey, onCancel }: Nu
 
   return (
     <div className="space-y-4">
-      <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
+      <div className="p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-200 rounded-md">
         <p className="font-semibold">Number Fetched Successfully!</p>
         <p className="mt-2">Number: +{number}</p>
       </div>

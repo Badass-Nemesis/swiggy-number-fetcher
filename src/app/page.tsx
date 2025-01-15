@@ -6,6 +6,7 @@ import NumberDisplay from "@/app/components/NumberDisplay";
 import StatusDisplay from "@/app/components/StatusDisplay";
 import { fetchNumber } from "@/app/actions/fetchNumber";
 import { cancelNumber } from "@/app/actions/cancelNumber";
+import ThemeToggle from "@/app/components/ThemeToggle";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string | null>(null);
@@ -61,10 +62,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
       <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center mb-8">Phone Number Checker</h1>
-        <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="flex justify-end p-4">
+          <ThemeToggle />
+        </div>
+        <h1 className="text-3xl font-bold text-center mb-8 md:text-4xl lg:text-5xl">
+          Swiggy Number Checker
+        </h1>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
           {!apiKey ? (
             <ApiKeyForm onSubmit={handleApiKeySubmit} />
           ) : (

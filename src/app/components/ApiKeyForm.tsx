@@ -31,11 +31,16 @@ export default function ApiKeyForm({ onSubmit }: ApiKeyFormProps) {
     };
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
-            <h1 className="text-2xl font-bold mb-4">Enter NinjaOTP API Key</h1>
+        <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
+            <h1 className="text-2xl font-bold mb-4 text-gray-900 text-center dark:text-white">
+                Enter NinjaOTP API Key
+            </h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label htmlFor="apiKey" className="block text-sm font-medium text-gray-700">
+                    <label
+                        htmlFor="apiKey"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    >
                         API Key
                     </label>
                     <input
@@ -43,7 +48,7 @@ export default function ApiKeyForm({ onSubmit }: ApiKeyFormProps) {
                         id="apiKey"
                         value={apiKey}
                         onChange={(e) => setApiKey(e.target.value)}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600 dark:bg-gray-700 dark:text-white"
                         placeholder="Enter your NinjaOTP API key"
                         required
                     />
@@ -51,14 +56,14 @@ export default function ApiKeyForm({ onSubmit }: ApiKeyFormProps) {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-700 dark:hover:bg-blue-800"
                 >
                     {loading ? "Submitting..." : "Submit"}
                 </button>
             </form>
 
             {error && (
-                <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
+                <div className="mt-4 p-4 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 rounded-md">
                     {error}
                 </div>
             )}
