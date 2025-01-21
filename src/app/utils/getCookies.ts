@@ -4,11 +4,11 @@ import { PROXY_URL, SWIGGY_RESTAURANTS_URL } from "@/lib/constants";
 
 export async function getCookies() {
     try {
-        const agent = new SocksProxyAgent(PROXY_URL);
+        // const agent = new SocksProxyAgent(PROXY_URL);
 
         const response = await axios.get(`${SWIGGY_RESTAURANTS_URL}`, {
-            httpAgent: agent,
-            httpsAgent: agent,
+            // httpAgent: agent,
+            // httpsAgent: agent,
             headers: {
                 "User-Agent":
                     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0",

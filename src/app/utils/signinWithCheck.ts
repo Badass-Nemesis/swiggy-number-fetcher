@@ -4,7 +4,7 @@ import { PROXY_URL, SWIGGY_BASE_URL, SWIGGY_SIGNIN_CHECK_URL, SWIGGY_RESTAURANTS
 
 export async function signinWithCheck(combinedCookies: string, csrfToken: string, phoneNumber: string) {
     try {
-        const agent = new SocksProxyAgent(PROXY_URL);
+        // const agent = new SocksProxyAgent(PROXY_URL);
 
         const url = `${SWIGGY_SIGNIN_CHECK_URL}`;
         const headers = {
@@ -36,8 +36,8 @@ export async function signinWithCheck(combinedCookies: string, csrfToken: string
         };
 
         const response = await axios.post(url, payload, {
-            httpAgent: agent,
-            httpsAgent: agent,
+            // httpAgent: agent,
+            // httpsAgent: agent,
             headers,
         });
 

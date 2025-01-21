@@ -30,7 +30,7 @@ export default function Home() {
             <ApiKeyForm onSubmit={handleApiKeySubmit} />
           ) : (
             <>
-              {number && accessId ? (
+              {(number && accessId) ? (
                 <NumberDisplay
                   number={number}
                   accessId={accessId}
