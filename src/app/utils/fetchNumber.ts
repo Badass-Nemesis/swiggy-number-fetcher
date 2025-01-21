@@ -13,13 +13,16 @@ export async function fetchNumber(apiKey: string) {
         const [_, access_id, number] = data.split(":");
         return { status: "success", access_id, number };
       } else {
-        return { status: "error", message: "Unknown response from server." };
+        return { status: "error", message: JSON.stringify(result) };
       }
     } else {
-      return { status: "error", message: result.message };
+      return { status: "error", message: result };
     }
   } catch (error) {
     console.error("Error fetching number:", error);
+    if (error instanceof Error) {
+      return { status: "error", message: `Failed to fetch number. Please try again. ${error.message}` }
+    }
     return { status: "error", message: "Failed to fetch number. Please try again." };
   }
 }

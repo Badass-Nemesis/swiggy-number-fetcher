@@ -16,11 +16,15 @@ export default function NumberDisplay({ number, accessId, apiKey, onCancel }: Nu
   const [error, setError] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const isMounted = useRef(true);
+  const hasChecked = useRef(false); // had to use this because the isMounted check alone wasn't fixing multiple calls error
 
   useEffect(() => {
     isMounted.current = true;
 
     const checkRegistration = async () => {
+      if (hasChecked.current) return; // skipping if it is already checked
+      hasChecked.current = true; // marking the number as checked
+
       setStatus("loading");
       try {
         const response = await fetch("/api/checkNumber", {
@@ -39,7 +43,6 @@ export default function NumberDisplay({ number, accessId, apiKey, onCancel }: Nu
 
             if (result.isRegistered === true) {
               setStatus("success");
-              setError("This number is registered. Cancelling and fetching a new number...");
 
               let timer = 5;
               setCountdown(timer);
@@ -51,7 +54,7 @@ export default function NumberDisplay({ number, accessId, apiKey, onCancel }: Nu
 
                   if (timer <= 0) {
                     clearInterval(countdownInterval);
-                    setCountdown(null);
+                    setCountdown(0);
                   }
                 }
               }, 1000);
@@ -83,7 +86,7 @@ export default function NumberDisplay({ number, accessId, apiKey, onCancel }: Nu
     return () => {
       isMounted.current = false;
     };
-  }, [number, accessId, apiKey, onCancel]);
+  }, [number, onCancel]); // it only runs when `number` or `onCancel` changes
 
   return (
     <div className="space-y-4">

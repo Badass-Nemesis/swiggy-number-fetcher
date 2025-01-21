@@ -46,6 +46,7 @@ export async function GET(request: Request) {
     try {
         const response = await fetch(NINJAOTP_API_URL);
         const data = await response.text();
+        // console.log(data); // debug
         return NextResponse.json({ status: "success", data });
     } catch (error) {
         return NextResponse.json(

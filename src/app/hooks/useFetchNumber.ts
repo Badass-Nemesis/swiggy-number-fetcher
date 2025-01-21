@@ -9,6 +9,7 @@ export function useFetchNumber() {
     const [error, setError] = useState<string | null>(null);
 
     const startFetchingNumbers = async (apiKey: string) => {
+        if (status === "loading") return; // this is to prevent multiple calls
         setStatus("loading");
         while (true) {
             try {
@@ -20,12 +21,18 @@ export function useFetchNumber() {
                     break;
                 } else if (result.status === "retry") {
                     setStatus("loading");
-                    await new Promise((resolve) => setTimeout(resolve, 5000)); 
+                    await new Promise((resolve) => setTimeout(resolve, 5000));
                 } else {
-                    throw new Error("Failed to fetch a number. Please try again.");
+                    setError(`Failed to fetch a number. Please check if your apiKey is correct or not. API response: ${JSON.stringify(result)}`);
+                    setStatus("error");
+                    break;
                 }
             } catch (err) {
-                setError("Failed to fetch or check number. Please try again.");
+                if (err instanceof Error) {
+                    setError(`Failed to fetch or check number. Error: ${err.message}`);
+                } else {
+                    setError("Failed to fetch or check number. Please try again.");
+                }
                 setStatus("error");
                 break;
             }
@@ -33,13 +40,14 @@ export function useFetchNumber() {
     };
 
     const handleCancel = async (apiKey: string, accessId: string) => {
+        if (status === "loading") return; // this is to prevent multiple calls
         setStatus("loading");
         try {
             const result = await cancelNumber(apiKey, accessId);
             if (result.status === "success") {
                 setNumber(null);
                 setAccessId(null);
-                startFetchingNumbers(apiKey); 
+                startFetchingNumbers(apiKey);
             } else {
                 setError("Failed to cancel the number. Please try again.");
                 setStatus("error");
