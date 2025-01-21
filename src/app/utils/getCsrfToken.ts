@@ -4,7 +4,7 @@ import { PROXY_URL, SWIGGY_BASE_URL, SWIGGY_RESTAURANTS_URL } from "@/lib/consta
 
 export async function getCsrfToken(initialCookies: string) {
   try {
-    const agent = new SocksProxyAgent(PROXY_URL);
+    // const agent = new SocksProxyAgent(PROXY_URL);
 
     const url = `${SWIGGY_BASE_URL}/dapi/restaurants/list/v5?lat=25.68850&lng=85.21160&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
     const headers = {
@@ -29,8 +29,8 @@ export async function getCsrfToken(initialCookies: string) {
     };
 
     const response = await axios.get(url, {
-      httpAgent: agent,
-      httpsAgent: agent,
+      // httpAgent: agent,
+      // httpsAgent: agent,
       headers,
     });
 
