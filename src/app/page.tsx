@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ApiKeyForm from "@/app/components/ApiKeyForm";
 import NumberDisplay from "@/app/components/NumberDisplay";
 import StatusDisplay from "@/app/components/StatusDisplay";
@@ -11,9 +11,16 @@ export default function Home() {
   const [apiKey, setApiKey] = useState<string | null>(null);
   const { number, accessId, status, error, startFetchingNumbers, handleCancel } = useFetchNumber();
 
+  // prevent calling the function multiple times
+  useEffect(() => {
+    if (apiKey && status !== "loading") {
+      startFetchingNumbers(apiKey);
+    }
+  }, [apiKey]); // this'll only run when apiKey changes
+
   const handleApiKeySubmit = async (key: string) => {
+    if (status === "loading") return; // i don't know why I did this
     setApiKey(key);
-    startFetchingNumbers(key);
   };
 
   return (
@@ -30,7 +37,7 @@ export default function Home() {
             <ApiKeyForm onSubmit={handleApiKeySubmit} />
           ) : (
             <>
-              {(number && accessId) ? (
+              {number && accessId ? (
                 <NumberDisplay
                   number={number}
                   accessId={accessId}
@@ -38,7 +45,7 @@ export default function Home() {
                   onCancel={() => handleCancel(apiKey, accessId)}
                 />
               ) : (
-                <StatusDisplay status={status} message="Fetching a number..." />
+                (!error && <StatusDisplay status={status} message="Fetching a number..." />)
               )}
               {error && <StatusDisplay status="error" message={error} />}
             </>

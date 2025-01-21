@@ -16,74 +16,78 @@ export default function NumberDisplay({ number, accessId, apiKey, onCancel }: Nu
   const [error, setError] = useState<string | null>(null);
   const [countdown, setCountdown] = useState<number | null>(null);
   const isMounted = useRef(true);
+  const hasChecked = useRef(false);
+
+  const startCountdown = () => {
+    let timer = 5;
+    setCountdown(timer);
+
+    const countdownInterval = setInterval(() => {
+      if (isMounted.current) {
+        timer--;
+        setCountdown(timer);
+
+        if (timer <= 0) {
+          clearInterval(countdownInterval);
+          setCountdown(0);
+          onCancel(); // triggering the cancellation after countdown
+        }
+      }
+    }, 1000);
+  };
+
+  const handleApiResponse = (result: any) => {
+    if (result.status === "success") {
+      setIsRegistered(result.isRegistered ?? null);
+      setStatus("success");
+
+      if (result.isRegistered === true) {
+        startCountdown(); // start countdown to cancel the number
+      } else {
+        setError(null); // error should be null here because the number is not registered
+      }
+    } else {
+      setStatus("error");
+      setError(result.message || "Failed to check number registration.");
+    }
+  };
+
+  const checkRegistration = async () => {
+    if (hasChecked.current) return; // skipping if already checked, thus fixing multiple calls error
+    hasChecked.current = true;
+
+    setStatus("loading");
+
+    try {
+      const response = await fetch("/api/checkNumber", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumber: number.slice(2) }),
+      });
+
+      const result = await response.json();
+
+      if (isMounted.current) {
+        handleApiResponse(result);
+      }
+    } catch (err) {
+      if (isMounted.current) {
+        setStatus("error");
+        setError("Failed to check number registration. Please try again.");
+      }
+    }
+  };
 
   useEffect(() => {
     isMounted.current = true;
-
-    const checkRegistration = async () => {
-      setStatus("loading");
-      try {
-        const response = await fetch("/api/checkNumber", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ phoneNumber: number.slice(2) }),
-        });
-
-        const result = await response.json();
-
-        if (isMounted.current) {
-          if (result.status === "success") {
-            setIsRegistered(result.isRegistered ?? null);
-
-            if (result.isRegistered === true) {
-              setStatus("success");
-              setError("This number is registered. Cancelling and fetching a new number...");
-
-              let timer = 5;
-              setCountdown(timer);
-
-              const countdownInterval = setInterval(() => {
-                if (isMounted.current) {
-                  timer--;
-                  setCountdown(timer);
-
-                  if (timer <= 0) {
-                    clearInterval(countdownInterval);
-                    setCountdown(null);
-                  }
-                }
-              }, 1000);
-
-              setTimeout(async () => {
-                if (isMounted.current) {
-                  onCancel();
-                }
-              }, 5000);
-            } else {
-              setStatus("success");
-              setError(null);
-            }
-          } else {
-            setStatus("error");
-            setError(result.message || "Failed to check number registration.");
-          }
-        }
-      } catch (err) {
-        if (isMounted.current) {
-          setStatus("error");
-          setError("Failed to check number registration. Please try again.");
-        }
-      }
-    };
-
     checkRegistration();
 
     return () => {
-      isMounted.current = false;
+      isMounted.current = false; // cleanup moment on unmount
     };
-  }, [number, accessId, apiKey, onCancel]);
+  }, [number, onCancel]);
 
   return (
     <div className="space-y-4">
