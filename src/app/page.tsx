@@ -6,10 +6,12 @@ import NumberDisplay from "@/app/components/NumberDisplay";
 import StatusDisplay from "@/app/components/StatusDisplay";
 import { useFetchNumber } from "@/app/hooks/useFetchNumber";
 import ThemeToggle from "@/app/components/ThemeToggle";
+import SingleNumberCheck from "@/app/components/SingleNumberCheck";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string | null>(null);
   const { number, accessId, status, error, startFetchingNumbers, handleCancel } = useFetchNumber();
+  const [mode, setMode] = useState<"fetch" | "single">("fetch"); // using this state to toggle between modes
 
   // prevent calling the function multiple times
   useEffect(() => {
@@ -32,23 +34,47 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-center mb-8 md:text-4xl lg:text-5xl">
           Swiggy Number Checker
         </h1>
+
+        {/* these are the two toggle buttons */}
+        <div className="flex justify-center gap-4 mb-8">
+          <button
+            onClick={() => setMode("fetch")}
+            className={`px-4 py-2 rounded-lg ${mode === "fetch" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700"
+              }`}
+          >
+            Automatically Fetch
+          </button>
+          <button
+            onClick={() => setMode("single")}
+            className={`px-4 py-2 rounded-lg ${mode === "single" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700"
+              }`}
+          >
+            Check Single Number
+          </button>
+        </div>
+
+        {/* rendering appropriate component form based on the mode */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-          {!apiKey ? (
-            <ApiKeyForm onSubmit={handleApiKeySubmit} />
+          {mode === "fetch" ? (
+            !apiKey ? (
+              <ApiKeyForm onSubmit={handleApiKeySubmit} />
+            ) : (
+              <>
+                {number && accessId ? (
+                  <NumberDisplay
+                    number={number}
+                    accessId={accessId}
+                    apiKey={apiKey}
+                    onCancel={() => handleCancel(apiKey, accessId)}
+                  />
+                ) : (
+                  !error && <StatusDisplay status={status} message="Fetching a number..." />
+                )}
+                {error && <StatusDisplay status="error" message={error} />}
+              </>
+            )
           ) : (
-            <>
-              {number && accessId ? (
-                <NumberDisplay
-                  number={number}
-                  accessId={accessId}
-                  apiKey={apiKey}
-                  onCancel={() => handleCancel(apiKey, accessId)}
-                />
-              ) : (
-                (!error && <StatusDisplay status={status} message="Fetching a number..." />)
-              )}
-              {error && <StatusDisplay status="error" message={error} />}
-            </>
+            <SingleNumberCheck />
           )}
         </div>
       </div>
