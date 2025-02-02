@@ -43,23 +43,26 @@ export default function SingleNumberCheck() {
     };
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
+        <div className="max-w-md mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
             <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white text-center">
                 Check Single Number
             </h2>
-            <div className="flex items-center gap-2">
-                <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-gray-100 dark:bg-gray-700">
+
+            <div className="flex items-center gap-2 w-full">
+                <div className="flex-shrink-0 flex items-center border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-gray-100 dark:bg-gray-700">
                     <span className="text-gray-700 dark:text-gray-300">+91</span>
                 </div>
+
                 <input
                     type="text"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    className="flex-1 min-w-0 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white placeholder:truncate"
                     placeholder="Enter 10-digit number"
                     maxLength={10}
                 />
             </div>
+
             <button
                 onClick={handleCheckNumber}
                 disabled={status === "loading"}
