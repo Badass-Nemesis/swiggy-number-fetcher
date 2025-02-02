@@ -31,8 +31,8 @@ export default function ApiKeyForm({ onSubmit }: ApiKeyFormProps) {
     };
 
     return (
-        <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
-            <h1 className="text-2xl font-bold mb-4 text-gray-900 text-center dark:text-white">
+        <div className="max-w-md mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
+            <h1 className="text-xl md:text-2xl font-bold mb-4 text-gray-900 text-center dark:text-white">
                 Enter NinjaOTP API Key
             </h1>
             <form onSubmit={handleSubmit} className="space-y-4">

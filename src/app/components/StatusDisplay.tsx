@@ -39,10 +39,10 @@ export default function StatusDisplay({ status, message }: StatusDisplayProps) {
       {status === "loading" ? (
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p>{message || "Loading..."}</p>
+          <p className="text-center">{message || "Loading..."}</p>
         </div>
       ) : (
-        <p>{message}</p>
+        <p className="text-center">{message}</p>
       )}
     </div>
   );
