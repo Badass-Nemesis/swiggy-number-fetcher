@@ -44,7 +44,7 @@ export default function SingleNumberCheck() {
 
     return (
         <div className="max-w-md mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
-            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white text-center">
+            <h2 className=" text-xl md:text-2xl font-bold mb-4 text-gray-900 text-center dark:text-white">
                 Check Single Number
             </h2>
 
