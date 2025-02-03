@@ -35,14 +35,14 @@ export default function StatusDisplay({ status, message }: StatusDisplayProps) {
   }
 
   return (
-    <div className={`p-4 ${backgroundColor} border ${borderColor} ${textColor} rounded-md`}>
+    <div className={`p-4 ${backgroundColor} border ${borderColor} ${textColor} rounded-md text-center`}>
       {status === "loading" ? (
         <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-center">{message || "Loading..."}</p>
+          <div className="flex-shrink-0 w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <p>{message || "Loading..."}</p>
         </div>
       ) : (
-        <p className="text-center">{message}</p>
+        <p>{message}</p>
       )}
     </div>
   );
