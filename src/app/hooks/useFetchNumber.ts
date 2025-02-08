@@ -7,13 +7,14 @@ export function useFetchNumber() {
     const [accessId, setAccessId] = useState<string | null>(null);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [error, setError] = useState<string | null>(null);
+    const [serverId, setServerId] = useState<number>(2); // i've put default server to 2 here
 
     const startFetchingNumbers = async (apiKey: string) => {
         if (status === "loading") return; // this is to prevent multiple calls
         setStatus("loading");
         while (true) {
             try {
-                const result = await fetchNumber(apiKey);
+                const result = await fetchNumber(apiKey, serverId);
                 if (result.status === "success") {
                     setAccessId(result.access_id);
                     setNumber(result.number);
@@ -58,5 +59,5 @@ export function useFetchNumber() {
         }
     };
 
-    return { number, accessId, status, error, startFetchingNumbers, handleCancel };
+    return { number, accessId, status, error, serverId, setServerId, startFetchingNumbers, handleCancel };
 }
