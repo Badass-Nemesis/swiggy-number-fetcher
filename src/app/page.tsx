@@ -7,18 +7,19 @@ import StatusDisplay from "@/app/components/StatusDisplay";
 import { useFetchNumber } from "@/app/hooks/useFetchNumber";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import SingleNumberCheck from "@/app/components/SingleNumberCheck";
+import ServerSelection from "./components/ServerSelection";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string | null>(null);
-  const { number, accessId, status, error, startFetchingNumbers, handleCancel } = useFetchNumber();
+  const { number, accessId, status, error, serverId, setServerId, startFetchingNumbers, handleCancel } = useFetchNumber();
   const [mode, setMode] = useState<"fetch" | "single">("fetch"); // using this state to toggle between modes
 
   // prevent calling the function multiple times
   useEffect(() => {
-    if (apiKey && status !== "loading") {
+    if (apiKey && status !== "loading" && mode === "fetch") {
       startFetchingNumbers(apiKey);
     }
-  }, [apiKey]); // this'll only run when apiKey changes
+  }, [apiKey, mode]); // had to add mode as a dependency
 
   const handleApiKeySubmit = async (key: string) => {
     if (status === "loading") return; // i don't know why I did this
@@ -52,6 +53,9 @@ export default function Home() {
             Check Single Number
           </button>
         </div>
+
+        {/* this is the server selection dropdown */} 
+        {mode === "fetch" && <ServerSelection serverId={serverId} setServerId={setServerId} />}
 
         {/* rendering appropriate component form based on the mode */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
