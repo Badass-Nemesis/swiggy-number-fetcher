@@ -8,8 +8,8 @@ export async function GET(request: Request) {
     const service = searchParams.get("service");
     const country = searchParams.get("country");
     const serverId = searchParams.get("serverId");
-    const status = searchParams.get("status");
-    const id = searchParams.get("id");
+    // const status = searchParams.get("status");
+    // const id = searchParams.get("id");
 
     if (!apiKey || !action) {
         return NextResponse.json(
@@ -28,24 +28,29 @@ export async function GET(request: Request) {
             );
         }
         NINJAOTP_API_URL += `&service=${service}&country=${country}&server_id=${serverId}`;
-    } else if (action === "setStatus") {
-        if (!status || !id) {
+    } else if (action === "getServices") {
+        if (!country || !serverId) {
             return NextResponse.json(
-                { status: "error", message: "Missing required parameters for setStatus." },
+                { status: "error", message: "Missing required parameters for getServices." },
                 { status: 400 }
             );
         }
-        NINJAOTP_API_URL += `&status=${status}&id=${id}`;
+        NINJAOTP_API_URL += `&country=${country}&server_id=${serverId}`;
     } else {
         return NextResponse.json(
-            { status: "error", message: "Invalid action." },
+            { status: "error", message: "Invalid action. What are you trying to do, other than getNumber and getServices?" },
             { status: 400 }
         );
     }
 
     try {
         const response = await fetch(NINJAOTP_API_URL);
-        const data = await response.text();
+        let data;
+        if (action === "getNumber") {
+            data = await response.text();
+        } else if (action === "getServices") {
+            data = await response.json();
+        }
         // console.log(data); // debug
         return NextResponse.json({ status: "success", data });
     } catch (error) {
