@@ -53,7 +53,7 @@ export async function GET(request: Request) {
     try {
         const response = await fetch(NINJAOTP_API_URL);
         let data;
-        if (action === "getNumber") {
+        if (action === "getNumber" || action === "setStatus") {
             data = await response.text();
         } else if (action === "getServices") {
             data = await response.json();
