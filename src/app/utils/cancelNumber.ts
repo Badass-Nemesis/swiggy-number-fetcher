@@ -1,7 +1,7 @@
 export async function cancelNumber(apiKey: string, accessId: string) {
     try {
         const response = await fetch(
-            `/api/proxy?apiKey=${apiKey}&action=setStatus&status=cancel&id=${accessId}`
+            `/api/proxy?apiKey=${apiKey}&action=setStatus&id=${accessId}`
         );
         const result = await response.json();
 
@@ -9,6 +9,8 @@ export async function cancelNumber(apiKey: string, accessId: string) {
             const data = result.data;
             if (data === "ACCESS_CANCEL") {
                 return { status: "success", message: "Number canceled successfully." };
+            } else if (data === "ACCESS_CANCEL_ALREADY") {
+                return { status: "success", message: "Number is already canceled." };
             } else if (data === "ERROR") {
                 return { status: "error", message: "Failed to cancel the number. Please cancel it manually on NinjaOTP." };
             } else {
