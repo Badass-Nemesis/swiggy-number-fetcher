@@ -11,7 +11,7 @@ import ServerSelection from "./components/ServerSelection";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string | null>(null);
-  const { number, accessId, status, error, serverId, setServerId, startFetchingNumbers, handleCancel } = useFetchNumber();
+  const { number, accessId, status, error, serverId, setServerId, message, startFetchingNumbers, handleCancel } = useFetchNumber();
   const [mode, setMode] = useState<"fetch" | "single">("fetch"); // using this state to toggle between modes
 
   // prevent calling the function multiple times
@@ -54,7 +54,7 @@ export default function Home() {
           </button>
         </div>
 
-        {/* this is the server selection dropdown */} 
+        {/* this is the server selection dropdown */}
         {mode === "fetch" && <ServerSelection serverId={serverId} setServerId={setServerId} />}
 
         {/* rendering appropriate component form based on the mode */}
@@ -72,7 +72,7 @@ export default function Home() {
                     onCancel={() => handleCancel(apiKey, accessId)}
                   />
                 ) : (
-                  !error && <StatusDisplay status={status} message="Fetching a number..." />
+                  !error && <StatusDisplay status={status} message={message} />
                 )}
                 {error && <StatusDisplay status="error" message={error} />}
               </>

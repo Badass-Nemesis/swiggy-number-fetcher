@@ -1,7 +1,7 @@
-export async function fetchNumber(apiKey: string, serverId: number) {
+export async function fetchNumber(apiKey: string, serverId: number, service: string) {
   try {
     const response = await fetch(
-      `/api/proxy?apiKey=${apiKey}&action=getNumber&service=iig&country=22&serverId=${serverId}`
+      `/api/proxy?apiKey=${apiKey}&action=getNumber&service=${service}&country=22&serverId=${serverId}`
     );
     const result = await response.json();
 

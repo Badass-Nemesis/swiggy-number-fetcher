@@ -2,7 +2,7 @@
 
 interface StatusDisplayProps {
   status: "idle" | "loading" | "success" | "error";
-  message?: string;
+  message?: string | null;
 }
 
 export default function StatusDisplay({ status, message }: StatusDisplayProps) {
