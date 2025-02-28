@@ -46,7 +46,7 @@ export async function GET(request: Request) {
         NINJAOTP_API_URL += `&country=${country}&server_id=${serverId}`;
     } else {
         return NextResponse.json(
-            { status: "error", message: "Invalid action. What are you trying to do, other than getNumber and getServices?" },
+            { status: "error", message: "Invalid action. What are you trying to do, other than cancellation, getNumber and getServices?" },
             { status: 400 }
         );
     }
