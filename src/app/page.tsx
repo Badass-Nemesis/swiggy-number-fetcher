@@ -7,7 +7,7 @@ import StatusDisplay from "@/app/components/StatusDisplay";
 import { useFetchNumber } from "@/app/hooks/useFetchNumber";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import SingleNumberCheck from "@/app/components/SingleNumberCheck";
-import ServerSelection from "./components/ServerSelection";
+import ServerSelection from "@/app/components/ServerSelection";
 
 export default function Home() {
   const [apiKey, setApiKey] = useState<string | null>(null);
@@ -55,7 +55,7 @@ export default function Home() {
         </div>
 
         {/* this is the server selection dropdown */}
-        {mode === "fetch" && <ServerSelection serverId={serverId} setServerId={setServerId} />}
+        {mode === "fetch" && <ServerSelection serverId={serverId} setServerId={setServerId} disabled={status !== "idle"} />}
 
         {/* rendering appropriate component form based on the mode */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
