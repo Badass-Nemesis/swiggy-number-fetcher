@@ -3,9 +3,15 @@ import NinjaOTPQueue from '@/app/lib/NinjaOtpQueue';
 import ServerSelector from '@/app/components/ServerSelector';
 
 const NINJA_SERVERS = [
+    { id: "1", name: "Server 1" },
     { id: "2", name: "Server 2" },
+    { id: "3", name: "Server 3" },
+    { id: "4", name: "Server 4" },
     { id: "5", name: "Server 5" },
-    { id: "6", name: "Server 6" }
+    { id: "6", name: "Server 6" },
+    { id: "7", name: "Server 7" },
+    { id: "8", name: "Server 8" },
+    { id: "9", name: "Server 9" }
 ];
 
 const logTypeColors = {
