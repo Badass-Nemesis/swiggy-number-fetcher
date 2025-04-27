@@ -19,7 +19,7 @@ export default function SingleNumberCheck() {
         setError(null);
 
         try {
-            const response = await fetch("/api/checkNumber", {
+            const response = await fetch("/api/checknumber", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
