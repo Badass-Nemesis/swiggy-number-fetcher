@@ -34,7 +34,7 @@ export default function PowerSMS() {
     const [logs, setLogs] = useState<{ text: string, type: keyof typeof logTypeColors }[]>([]);
     const [isRunning, setIsRunning] = useState(false);
     const queueRef = useRef<PowerSmsQueue | null>(null);
-    const logsEndRef = useRef<HTMLDivElement>(null);
+    const logsContainerRef = useRef<HTMLDivElement>(null);
 
     const handleLog = (log: { text: string, type: keyof typeof logTypeColors }, isNewAttempt: boolean) => {
         setLogs(prev => isNewAttempt ? [log] : [...prev, log]);
@@ -63,8 +63,11 @@ export default function PowerSMS() {
         return () => queueRef.current?.stop();
     }, []);
 
+
     useEffect(() => {
-        logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (logsContainerRef.current) {
+            logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
+        }
     }, [logs]);
 
     return (
@@ -109,7 +112,9 @@ export default function PowerSMS() {
                 </div>
 
                 <style>{blinkAnimation}</style>
-                <div className="mt-4 h-64 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-3 rounded-md relative">
+                <div
+                    ref={logsContainerRef}
+                    className="mt-4 h-64 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-3 rounded-md relative">
                     {logs.length > 0 ? (
                         <>
                             {logs.map((log, i) => (
@@ -121,7 +126,7 @@ export default function PowerSMS() {
                                     {log.text}
                                 </div>
                             ))}
-                            <div ref={logsEndRef} />
+                            {/* <div ref={logsEndRef} /> */}
                         </>
                     ) : (
                         <p className="text-gray-500 dark:text-gray-400 text-center py-4">
