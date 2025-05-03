@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { POWERSMS_HANDLER_API_URL } from "@/app/lib/constants";
 import axios from "axios";
 
+export const config = {
+    maxDuration: 30,
+}
+
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const apiKey = searchParams.get("apiKey");
