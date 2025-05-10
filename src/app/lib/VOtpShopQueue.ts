@@ -172,10 +172,15 @@ export default class VOtpShopQueue {
 
                 } catch (error) {
                     if (!axios.isCancel(error)) {
-                        this.addLog(
-                            `Server ${job.serverId}: ${error instanceof Error ? error.message : 'Error'}`,
-                            'error'
-                        );
+                        const errorMessage = error instanceof Error ? error.message : 'Error';
+                        this.addLog(`Server ${job.serverId}: ${errorMessage}`, 'error');
+
+                        // Check for NO_BALANCE error
+                        if (errorMessage.includes('NO_BALANCE')) {
+                            this.addLog('❌ Fatal Error: No balance left!', 'error');
+                            this.stop();
+                            return;
+                        }
                     }
                 } finally {
                     this.activeRequests = this.activeRequests.filter(req => req !== source);
@@ -238,7 +243,7 @@ export default class VOtpShopQueue {
         if (res.data.data !== "ACCESS_CANCEL" && res.data.data !== "ACCESS_CANCEL_ALREADY") {
             this.addLog(`Server ${job.serverId}: Number wasn't cancelled properly. 
                 Please cancel the number and restart the fetching`, 'error');
-            this.stop();
+            // this.stop(); // disabled only for VOtpShop service
             throw new Error(`Cancellation failed: ${res.data.data}`);
         }
     }

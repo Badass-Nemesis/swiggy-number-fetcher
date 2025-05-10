@@ -74,6 +74,12 @@ export default function VOtpShop() {
         <div className="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-md">
             <h2 className="text-xl font-semibold mb-4 dark:text-white">VOtpShop</h2>
 
+            <div className="flex justify-center items-center text-center text-sm font-medium text-blue-400 mb-4 border-2 rounded-md border-blue-200 px-3 py-2">
+                Note: VOtpShop gave wrong cancel number api. So the automatic number cancellation doesn't work.
+                You have to manually cancel the number. I have disabled the "fatal error stop service" in number cancellation
+                failure for VOtpShop. So in case of NO_BALANCE error, just manually cancel the numbers and run the fetch again.
+            </div>
+
             <div className="space-y-4">
                 <div>
                     <label className="block text-sm font-medium mb-1 dark:text-gray-300">

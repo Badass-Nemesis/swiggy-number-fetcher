@@ -148,10 +148,15 @@ export default class NinjaOTPQueue {
 
                 } catch (error) {
                     if (!axios.isCancel(error)) {
-                        this.addLog(
-                            `Server ${job.serverId}: ${error instanceof Error ? error.message : 'Error'}`,
-                            'error'
-                        );
+                        const errorMessage = error instanceof Error ? error.message : 'Error';
+                        this.addLog(`Server ${job.serverId}: ${errorMessage}`, 'error');
+
+                        // Check for NO_BALANCE error
+                        if (errorMessage.includes('NO_BALANCE')) {
+                            this.addLog('❌ Fatal Error: No balance left!', 'error');
+                            this.stop();
+                            return;
+                        }
                     }
                 } finally {
                     this.activeRequests = this.activeRequests.filter(req => req !== source);
