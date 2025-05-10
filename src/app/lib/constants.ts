@@ -2,6 +2,10 @@
 export const NINJAOTP_BASE_URL = "https://api.ninjaotp.com";
 export const NINJAOTP_HANDLER_API_URL = `${NINJAOTP_BASE_URL}/stubs/handler_api.php`;
 
+// VOtpShop API constants
+export const VOTPSHOP_BASE_URL = "https://api.votpshop.com";
+export const VOTPSHOP_HANDLER_API_URL = `${VOTPSHOP_BASE_URL}/stubs/handler_api.php`;
+
 // PowerSMS API constants
 export const POWERSMS_BASE_URL = "https://powersms.shop"
 export const POWERSMS_HANDLER_API_URL = `${POWERSMS_BASE_URL}/stubs/handler_api.php`;

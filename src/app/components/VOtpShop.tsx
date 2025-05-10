@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import PowerSmsQueue from '@/app/lib/PowerSmsQueue';
+import VOtpShopQueue from '@/app/lib/VOtpShopQueue';
 import ServerSelector from '@/app/components/ServerSelector';
 
-const POWER_SMS_SERVERS = [
+const VOTP_SERVERS = [
+    { id: "1", name: "Server 1" },
+    { id: "2", name: "Server 2" },
     { id: "4", name: "Server 4" },
     { id: "5", name: "Server 5" },
+    { id: "6", name: "Server 6" },
     { id: "7", name: "Server 7" },
     { id: "8", name: "Server 8" },
-    { id: "10", name: "Server 10" },
-    { id: "12", name: "Server 12" },
-    { id: "15", name: "Server 15" }
+    { id: "9", name: "Server 9" }
 ];
 
 const logTypeColors = {
@@ -29,12 +30,12 @@ const blinkAnimation = `
 }
 `;
 
-export default function PowerSMS() {
+export default function VOtpShop() {
     const [apiKey, setApiKey] = useState('');
     const [selectedServers, setSelectedServers] = useState<string[]>([]);
     const [logs, setLogs] = useState<{ text: string, type: keyof typeof logTypeColors }[]>([]);
     const [isRunning, setIsRunning] = useState(false);
-    const queueRef = useRef<PowerSmsQueue | null>(null);
+    const queueRef = useRef<VOtpShopQueue | null>(null);
     const logsContainerRef = useRef<HTMLDivElement>(null);
 
     const handleLog = (log: { text: string, type: keyof typeof logTypeColors }, isNewAttempt: boolean) => {
@@ -45,15 +46,14 @@ export default function PowerSMS() {
         if (!apiKey || selectedServers.length === 0) return;
 
         setIsRunning(true);
-        setLogs([{ text: 'Starting PowerSMS service...', type: 'info' }]);
+        setLogs([{ text: 'Starting VOtpShop service...', type: 'info' }]);
 
-        queueRef.current = new PowerSmsQueue(
+        queueRef.current = new VOtpShopQueue(
             handleLog,
-            () => setIsRunning(false),
-            selectedServers
+            () => setIsRunning(false)
         );
 
-        queueRef.current.start(apiKey);
+        queueRef.current.start(apiKey, selectedServers);
     };
 
     const stopFetching = () => {
@@ -64,7 +64,6 @@ export default function PowerSMS() {
         return () => queueRef.current?.stop();
     }, []);
 
-
     useEffect(() => {
         if (logsContainerRef.current) {
             logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
@@ -73,7 +72,7 @@ export default function PowerSMS() {
 
     return (
         <div className="p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-md">
-            <h2 className="text-xl font-semibold mb-4 dark:text-white">PowerSMS</h2>
+            <h2 className="text-xl font-semibold mb-4 dark:text-white">VOtpShop</h2>
 
             <div className="space-y-4">
                 <div>
@@ -85,7 +84,7 @@ export default function PowerSMS() {
                         onChange={(e) => setApiKey(e.target.value)}
                         disabled={isRunning}
                         className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white disabled:opacity-50"
-                        placeholder="Enter PowerSMS API key"
+                        placeholder="Enter VOtpShop API key"
                     />
                 </div>
 
@@ -94,7 +93,7 @@ export default function PowerSMS() {
                         Servers
                     </label>
                     <ServerSelector
-                        servers={POWER_SMS_SERVERS}
+                        servers={VOTP_SERVERS}
                         selected={selectedServers}
                         onChange={setSelectedServers}
                         disabled={isRunning}

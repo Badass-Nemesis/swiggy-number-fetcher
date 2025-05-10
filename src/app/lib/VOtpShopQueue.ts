@@ -1,6 +1,7 @@
 import axios, { CancelTokenSource } from 'axios';
+import apiResponse from '@/app/utils/addVOtpJobs';
 
-type NinjaJob = {
+type VOtpJob = {
     serverId: string;
     serviceKey: string;
     apiKey: string;
@@ -11,7 +12,7 @@ type LogEntry = {
     type: 'attempt' | 'success' | 'error' | 'info' | 'warning' | 'cancellation';
 };
 
-export default class NinjaOTPQueue {
+export default class VOtpShopQueue {
     private activeRequests: CancelTokenSource[] = [];
     private isStopped = false;
     private currentAttempt = 1;
@@ -68,7 +69,7 @@ export default class NinjaOTPQueue {
                 this.activeRequests.push(source);
 
                 try {
-                    const res = await axios.get('/api/proxy/ninjaotp', {
+                    const res = await axios.get('/api/proxy/votpshop', {
                         cancelToken: source.token,
                         params: {
                             apiKey: apiKey,
@@ -108,14 +109,37 @@ export default class NinjaOTPQueue {
         );
     }
 
+    private async addJobsIfNotExists(jobsArray: VOtpJob[], newJobsData: Array<{ id: string, operator: string }>, apiKey: string) {
+        const existingServerIds = new Set(jobsArray.map(job => job.serverId));
+
+        for (const jobData of newJobsData) {
+            const alreadyExists = jobsArray.some(job => job.serviceKey === jobData.id);
+            const hasMatchingServerId = existingServerIds.has(jobData.operator);
+
+            // Only add if:
+            // 1. The serviceKey (id) doesn't already exist in jobsArray
+            // 2. The operator (serverId) matches an existing serverId in jobsArray
+            if (!alreadyExists && hasMatchingServerId) {
+                jobsArray.push({ serverId: jobData.operator, serviceKey: jobData.id, apiKey: apiKey });
+            }
+        }
+    }
+
     private async processJobs(apiKey: string) {
-        const jobs: NinjaJob[] = [];
+        const jobs: VOtpJob[] = [];
 
         Object.entries(this.serviceKeys).forEach(([serverId, serviceKeys]) => {
             serviceKeys.forEach(serviceKey => {
                 jobs.push({ serverId, serviceKey, apiKey });
             });
         });
+
+        const jobsToAdd = apiResponse.data.map(item => ({
+            id: item.id,
+            operator: item.operator
+        }));
+
+        this.addJobsIfNotExists(jobs, jobsToAdd, apiKey);
 
         while (!this.isStopped) {
             this.clearLogs(true);
@@ -163,8 +187,8 @@ export default class NinjaOTPQueue {
         }
     }
 
-    private async fetchNumber(job: NinjaJob, cancelToken: any) {
-        const res = await axios.get('/api/proxy/ninjaotp', {
+    private async fetchNumber(job: VOtpJob, cancelToken: any) {
+        const res = await axios.get('/api/proxy/votpshop', {
             cancelToken,
             params: {
                 apiKey: job.apiKey,
@@ -201,8 +225,8 @@ export default class NinjaOTPQueue {
         }
     }
 
-    private async cancelNumber(job: NinjaJob, accessId: string) {
-        const res = await axios.get('/api/proxy/ninjaotp', {
+    private async cancelNumber(job: VOtpJob, accessId: string) {
+        const res = await axios.get('/api/proxy/votpshop', {
             params: {
                 apiKey: job.apiKey,
                 action: 'setStatus',
