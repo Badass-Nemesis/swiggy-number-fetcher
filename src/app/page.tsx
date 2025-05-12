@@ -44,8 +44,8 @@ export default function Home() {
         {mode === "fetch" ? (
           <div className="space-y-4 py-4">
             {/* <NinjaOTP /> */}
-            <div className="max-w mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
-              <div className="flex justify-center items-center mb-2 text-2xl tracking-tighter text-blue-500 px-4 py-2">
+            <div className="max-w mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg  px-4 py-2">
+              <div className="flex justify-center items-center mb-2 text-2xl tracking-tighter text-blue-500">
                 NinjaOTP services are unavailable right now.
               </div>
               NinjaOTP implemented cloudflare in their api services (Dunno why!!), so the api calls are failing.
