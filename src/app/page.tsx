@@ -52,7 +52,13 @@ export default function Home() {
               Kindly wait until they undo this.
             </div>
             <VOtpShop />
-            <PowerSMS />
+            {/* <PowerSMS /> */}
+            <div className="max-w mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg  px-4 py-2">
+              <div className="flex justify-center items-center mb-2 text-2xl tracking-tighter text-blue-500">
+                Powersms Shop services are unavailable right now.
+              </div>
+              When Powersms Shop services are back, I'll update the panel.
+            </div>
           </div>) : (
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
             <SingleNumberCheck />
