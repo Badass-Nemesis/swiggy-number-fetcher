@@ -43,6 +43,9 @@ export default function Home() {
         {/* rendering appropriate component form based on the mode */}
         {mode === "fetch" ? (
           <div className="space-y-4 py-4">
+            <div className="flex justify-center items-center max-w mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg px-4 py-2">
+              NinjaOTP not workiing right now. Their public API is wrong and it's returning ERROR while purchasing number.
+            </div>
             <NinjaOTP />
             {/* <div className="max-w mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg px-4 py-2">
               <div className="flex justify-center items-center mb-2 text-xl tracking-tighter text-blue-500">
