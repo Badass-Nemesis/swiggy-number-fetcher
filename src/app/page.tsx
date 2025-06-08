@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 // import StatusDisplay from "@/app/components/StatusDisplay";
 // import ThemeToggle from "@/app/components/ThemeToggle";
 import SingleNumberCheck from "@/app/components/SingleNumberCheck";
-// import NinjaOTP from "./components/NinjaOTP";
+import NinjaOTP from "./components/NinjaOTP";
 import PowerSMS from "./components/PowerSMS";
 import VOtpShop from "./components/VOtpShop";
 
@@ -43,14 +43,14 @@ export default function Home() {
         {/* rendering appropriate component form based on the mode */}
         {mode === "fetch" ? (
           <div className="space-y-4 py-4">
-            {/* <NinjaOTP /> */}
-            <div className="max-w mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg px-4 py-2">
+            <NinjaOTP />
+            {/* <div className="max-w mx-auto md:p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg px-4 py-2">
               <div className="flex justify-center items-center mb-2 text-xl tracking-tighter text-blue-500">
                 NinjaOTP services are unavailable right now.
               </div>
               NinjaOTP implemented cloudflare in their api services (Dunno why!!), so the api calls are failing.
               Kindly wait until they undo this.
-            </div>
+            </div> */}
             <VOtpShop />
             <PowerSMS />
           </div>) : (
